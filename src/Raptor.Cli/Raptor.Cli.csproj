@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <!-- Tool Packaging -->
+  <PropertyGroup>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>raptor</ToolCommandName>
+    <PackageOutputPath>./nupkg</PackageOutputPath>
+  </PropertyGroup>
+
+  <!-- Optimize only for Release builds -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <!-- Allow test and benchmark projects to access internal members -->
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>Raptor.Tests</_Parameter1>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>Raptor.Benchmarks</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <!-- NativeAOT: Enable for publish builds using: dotnet publish -c Release -->
+  <!-- This provides instant startup, smaller binaries, predictable performance -->
+  <!-- Trade-off: Slightly longer build times, but better runtime characteristics for CLI tools -->
+  <PropertyGroup Condition="'$(PublishAot)' == 'true'">
+    <SelfContained>true</SelfContained>
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>link</TrimMode>
+    <!-- Disable ReadyToRun for AOT builds (not compatible) -->
+    <PublishReadyToRun>false</PublishReadyToRun>
+  </PropertyGroup>
+
+  <!-- JIT builds: Use ReadyToRun for faster startup without AOT restrictions -->
+  <PropertyGroup Condition="'$(PublishAot)' != 'true'">
+    <PublishReadyToRun>true</PublishReadyToRun>
+  </PropertyGroup>
+
+</Project>
+
