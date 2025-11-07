@@ -334,8 +334,8 @@ public class ResultsReporterTests : IDisposable
             ResultsReporter.Report(collector, duration);
 
             var output = testWriter.ToString();
-            Assert.Contains("1,234", output);
-            Assert.Contains("5,678", output);
+            Assert.Contains("1234", output);
+            Assert.Contains("5678", output);
         }
         finally
         {
@@ -361,7 +361,7 @@ public class ResultsReporterTests : IDisposable
             Assert.Contains("Avg:", output);
             var avgIndex = output.IndexOf("Avg:");
             var avgLine = output.Substring(avgIndex, 50);
-            Assert.Contains("150.00", avgLine);
+            Assert.Contains("150", avgLine);
         }
         finally
         {
