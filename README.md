@@ -231,4 +231,4 @@ The tool provides clear error messages for:
 
 ## License
 
-MIT License
+This project is licensed under the [MIT license](LICENSE.md).
